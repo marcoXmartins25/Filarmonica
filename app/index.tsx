@@ -13,7 +13,7 @@ export default function Index() {
       <ImageBackground style={styles.container}>
         <Image style={styles.imagem} 
         source={require("../assets/images/filarmonica.png")} />
-        <Text>Banda Filarmónica de Miranda do Douro</Text>
+        <Text>Banda Filarmónica de Miranda do Douro !!!</Text>
         <Button
           title="Clique aqui"
           onPress={() => {
