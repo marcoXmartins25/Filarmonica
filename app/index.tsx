@@ -17,7 +17,7 @@ export default function Index() {
         <Button
           title="Clique aqui"
           onPress={() => {
-            alert("ola");
+            alert("ola mundo");
           }}
         />
       </ImageBackground>
