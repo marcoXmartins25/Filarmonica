@@ -12,7 +12,7 @@ export default function Index() {
     >
       <ImageBackground style={styles.container}>
         <Image style={styles.imagem} 
-        source={require("../assets/images/filarmonica.png")} />
+        source={require("../assets/images/filarmonica.jpg")} />
         <Text>Banda Filarmónica de Miranda do Douro !!!</Text>
         <Button
           title="Clique aqui"
@@ -29,14 +29,14 @@ export default function Index() {
 
 const styles = {
   container: {
-    width: 300,
-    height: 300,
-    justifyContent: "center" as ViewStyle["justifyContent"],
-    alignItems: "center" as ViewStyle["alignItems"],
-    borderRadius: 10,
-    overflow: "hidden" as ViewStyle["overflow"],
+    width: 600,
+    height: 600,
+    justifyContent: "center" as const,
+    alignItems: "center" as const,
   },
   imagem: {
     marginBottom: 60,
+    width: 100,
+    height: 100,
   },
 };
