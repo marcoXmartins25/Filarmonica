@@ -1,11 +1,9 @@
 import { Button, Image, Text, TouchableOpacity, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import { NativeStackNavigationProp } from "@react-navigation/native-stack";
-import { useNavigation } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 
 export default function Index() {
-  const navigation = useNavigation();
+  const router = useRouter();
 
   return (
     <SafeAreaView style={styles.container}>
@@ -13,11 +11,13 @@ export default function Index() {
         style={styles.imagem}
         source={require("../assets/images/filarmonica1.jpg")}
       />
-      <Text style={styles.titulo}>Banda Filarmónica de Miranda do Douro !!!</Text>
+      <Text style={styles.titulo}>
+        Banda Filarmónica de Miranda do Douro !!!
+      </Text>
 
       <TouchableOpacity
         style={styles.botaoContainer}
-        onPress={() => navigation.navigate("OutraPagina")}
+        onPress={() => router.push("./paginas/servicos")}
       >
         <Text style={styles.botaoTexto}>Entrar</Text>
       </TouchableOpacity>
@@ -53,7 +53,7 @@ const styles = {
   botaoTexto: {
     color: "white",
     fontSize: 16,
-    fontWeight: "600",
-    textAlign: "center",
+    fontWeight: 600,
+    textAlign: "center" as const,
   },
 };
