@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import {
   FlatList,
   Text,
@@ -8,15 +8,29 @@ import {
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
+import { useFocusEffect } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const servicos = [
-  { id: "1", local: "Auditório Municipal", hora: "16h", seviço: "Concerto" },
-  { id: "2", local: "Igreja Matriz", hora: "17h", seviço: "Missa" },
-  { id: "3", local: "Praça Central", hora: "18h", seviço: "Teatro" },
-];
+type Servico = {
+  nome?: string;
+  local?: string;
+  hora?: string;
+  descricao?: string;
+  seviço?: string;
+};
 
 export default function Servicos() {
   const router = useRouter();
+  const [servicos, setServicos] = useState<Servico[]>([]);
+  useFocusEffect(
+    React.useCallback(() => {
+      const carregarServicos = async () => {
+        const servicosSalvos = await AsyncStorage.getItem("servicos");
+        setServicos(servicosSalvos ? JSON.parse(servicosSalvos) : []);
+      };
+      carregarServicos();
+    }, [])
+  );
 
   return (
     <View style={styles.container}>
@@ -29,13 +43,13 @@ export default function Servicos() {
 
       <FlatList
         data={servicos}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(_, idx) => idx.toString()}
         renderItem={({ item }) => (
           <TouchableOpacity style={styles.item}>
-            <Text style={styles.texto}>{item.local}</Text>
+            <Text style={styles.texto}>{item.nome || item.local}</Text>
             <View style={styles.infoLinha}>
-              <Text style={styles.hora}>{item.hora}</Text>
-              <Text style={styles.serviço}>{item.seviço}</Text>
+              <Text style={styles.hora}>{item.hora || ""}</Text>
+              <Text style={styles.serviço}>{item.descricao || item.seviço}</Text>
             </View>
           </TouchableOpacity>
         )}
