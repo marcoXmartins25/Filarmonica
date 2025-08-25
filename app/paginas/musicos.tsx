@@ -1,14 +1,44 @@
-import React from "react";
-import { FlatList, Text, View, StyleSheet, TouchableOpacity } from "react-native";
-import Ionicons from "react-native-vector-icons/Ionicons";
 import { useRouter } from "expo-router";
+import React from "react";
+import {
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const musicos = [
-  { id: "1", nome: "João Silva", instrumento: "Violino" },
-  { id: "2", nome: "Maria Costa", instrumento: "Flauta" },
-  { id: "3", nome: "Carlos Ferreira", instrumento: "Trompete" },
-  { id: "4", nome: "Ana Ribeiro", instrumento: "Clarinete" },
+  {
+    id: "1",
+    nome: "Marco Martins",
+    instrumento: "Percurssão",
+    foto: require("../../assets/images/marco.jpg"),
+  },
+  {
+    id: "2",
+    nome: "Rodrigo",
+    instrumento: "Trompete",
+
+    foto: null,
+  },
+  {
+    id: "3",
+    nome: "Gonçalo",
+    instrumento: "Sax Alto",
+
+    foto: null,
+  },
+  {
+    id: "4",
+    nome: "Ana Ribeiro",
+    instrumento: "Clarinete",
+    foto: null,
+  },
 ];
+
 export default function Musicos() {
   const router = useRouter();
   return (
@@ -24,8 +54,11 @@ export default function Musicos() {
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <View style={styles.item}>
-            <Text style={styles.nome}>{item.nome}</Text>
-            <Text style={styles.instrumento}>{item.instrumento}</Text>
+            <Image source={item.foto} style={styles.foto} />
+            <View>
+              <Text style={styles.nome}>{item.nome}</Text>
+              <Text style={styles.instrumento}>{item.instrumento}</Text>
+            </View>
           </View>
         )}
       />
@@ -48,11 +81,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   item: {
+    flexDirection: "row", // Adicionado para alinhar imagem e texto lado a lado
+    alignItems: "center",
     backgroundColor: "#3094E6",
     paddingVertical: 15,
     paddingHorizontal: 15,
     borderRadius: 12,
     marginBottom: 10,
+  },
+  foto: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    marginRight: 15,
+    backgroundColor: "#ccc",
   },
   nome: {
     color: "white",
