@@ -1,20 +1,21 @@
+import { Ionicons } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useFocusEffect } from "@react-navigation/native";
+import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
+  Alert,
   FlatList,
+  Modal,
+  Pressable,
+  StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  StyleSheet,
-  Alert,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
-import { useRouter } from "expo-router";
-import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 
 type Servico = {
   nome?: string;
-  local?: string;
   hora?: string;
   descricao?: string;
   seviço?: string;
@@ -23,6 +24,8 @@ type Servico = {
 export default function Servicos() {
   const router = useRouter();
   const [servicos, setServicos] = useState<Servico[]>([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [servicoSelecionado, setServicoSelecionado] = useState<Servico | null>(null);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -54,6 +57,11 @@ export default function Servicos() {
     );
   };
 
+  const abrirModal = (servico: Servico) => {
+    setServicoSelecionado(servico);
+    setModalVisible(true);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -67,11 +75,13 @@ export default function Servicos() {
         data={servicos}
         keyExtractor={(_, idx) => idx.toString()}
         renderItem={({ item, index }) => (
-          <View style={styles.item}>
+          <TouchableOpacity
+            style={styles.item}
+            onPress={() => abrirModal(item)}
+          >
             <Text style={styles.texto}>{item.nome}</Text>
             <View style={styles.infoLinha}>
               <Text style={styles.hora}>{item.hora || ""}</Text>
-
               <TouchableOpacity
                 style={styles.botaoEliminar}
                 onPress={() => eliminarServico(index)}
@@ -79,9 +89,32 @@ export default function Servicos() {
                 <Ionicons name="trash" size={20} color="white" />
               </TouchableOpacity>
             </View>
-          </View>
+          </TouchableOpacity>
         )}
       />
+
+      {/* Modal */}
+      <Modal
+        visible={modalVisible}
+        animationType="slide"
+        transparent={true}
+        onRequestClose={() => setModalVisible(false)}
+      >
+        <View style={styles.modalFundo}>
+          <View style={styles.modalContainer}>
+            <Text style={styles.modalTitulo}>{servicoSelecionado?.nome}</Text>
+            <Text style={styles.modalTexto}>Hora: {servicoSelecionado?.hora}</Text>
+            <Text style={styles.modalTexto}>Descrição: {servicoSelecionado?.descricao || servicoSelecionado?.seviço}</Text>
+
+            <Pressable
+              style={styles.botaoFechar}
+              onPress={() => setModalVisible(false)}
+            >
+              <Text style={styles.textoBotao}>Fechar</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -132,5 +165,40 @@ const styles = StyleSheet.create({
     backgroundColor: "#FF4C4C",
     padding: 6,
     borderRadius: 8,
+  },
+  modalFundo: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalContainer: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 12,
+    width: "80%",
+    alignItems: "center",
+  },
+  modalTitulo: {
+    fontSize: 22,
+    fontWeight: "bold",
+    marginBottom: 10,
+  },
+  modalTexto: {
+    fontSize: 16,
+    marginBottom: 8,
+    textAlign: "center",
+  },
+  botaoFechar: {
+    marginTop: 20,
+    backgroundColor: "#3094E6",
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 8,
+  },
+  textoBotao: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 16,
   },
 });
