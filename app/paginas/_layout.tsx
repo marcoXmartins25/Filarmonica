@@ -31,6 +31,15 @@ export default function PaginasLayout() {
           ),
         }}
       />
+      <Tabs.Screen
+        name="adicionarmusico"
+        options={{
+          title: "Adicionar Músico",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="add" size={size} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }

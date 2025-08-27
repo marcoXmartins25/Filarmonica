@@ -1,10 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   FlatList,
   Text,
   TouchableOpacity,
   View,
   StyleSheet,
+  Alert,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
@@ -22,6 +23,7 @@ type Servico = {
 export default function Servicos() {
   const router = useRouter();
   const [servicos, setServicos] = useState<Servico[]>([]);
+
   useFocusEffect(
     React.useCallback(() => {
       const carregarServicos = async () => {
@@ -31,6 +33,26 @@ export default function Servicos() {
       carregarServicos();
     }, [])
   );
+
+  const eliminarServico = (index: number) => {
+    Alert.alert(
+      "Eliminar Serviço",
+      "Tem a certeza que quer eliminar este serviço?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        {
+          text: "Eliminar",
+          style: "destructive",
+          onPress: async () => {
+            const novosServicos = [...servicos];
+            novosServicos.splice(index, 1);
+            setServicos(novosServicos);
+            await AsyncStorage.setItem("servicos", JSON.stringify(novosServicos));
+          },
+        },
+      ]
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -44,14 +66,20 @@ export default function Servicos() {
       <FlatList
         data={servicos}
         keyExtractor={(_, idx) => idx.toString()}
-        renderItem={({ item }) => (
-          <TouchableOpacity style={styles.item}>
-            <Text style={styles.texto}>{item.nome || item.local}</Text>
+        renderItem={({ item, index }) => (
+          <View style={styles.item}>
+            <Text style={styles.texto}>{item.nome}</Text>
             <View style={styles.infoLinha}>
               <Text style={styles.hora}>{item.hora || ""}</Text>
-              <Text style={styles.serviço}>{item.descricao || item.seviço}</Text>
+
+              <TouchableOpacity
+                style={styles.botaoEliminar}
+                onPress={() => eliminarServico(index)}
+              >
+                <Ionicons name="trash" size={20} color="white" />
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
+          </View>
         )}
       />
     </View>
@@ -91,17 +119,18 @@ const styles = StyleSheet.create({
   },
   infoLinha: {
     flexDirection: "row",
-    marginTop: 4,
+    justifyContent: "space-between",
+    marginTop: 10,
+    alignItems: "center",
   },
   hora: {
     color: "#FFD700",
     fontSize: 16,
     fontWeight: "500",
-    marginRight: 10,
   },
-  serviço: {
-    color: "#FFFFFF",
-    fontSize: 16,
-    fontWeight: "400",
+  botaoEliminar: {
+    backgroundColor: "#FF4C4C",
+    padding: 6,
+    borderRadius: 8,
   },
 });
