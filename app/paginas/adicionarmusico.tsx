@@ -43,7 +43,7 @@ export default function AdicionarMusico() {
 
     setNome("");
     setInstrumento("");
-    router.back();
+    router.push("./musicos");
   };
 
   return (

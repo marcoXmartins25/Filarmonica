@@ -3,14 +3,14 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { useRouter } from "expo-router";
 import React, { useState } from "react";
 import {
-    Alert,
-    KeyboardAvoidingView,
-    Platform,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TextInput,
-    TouchableOpacity,
+  Alert,
+  KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
 } from "react-native";
 
 export default function CriarServicos() {
@@ -36,7 +36,7 @@ export default function CriarServicos() {
     setNome("");
     setDescricao("");
     setHora("");
-    router.back();
+    router.push("./servicos");
   };
 
   return (
@@ -78,7 +78,19 @@ export default function CriarServicos() {
 
         {showPicker && (
           <DateTimePicker
-            value={hora ? new Date(`1970-01-01T${hora}:00`) : new Date()}
+            value={
+              hora
+                ? (() => {
+                    const [h, m] = hora.split(":").map(Number);
+                    const d = new Date();
+                    d.setHours(h);
+                    d.setMinutes(m);
+                    d.setSeconds(0);
+                    d.setMilliseconds(0);
+                    return d;
+                  })()
+                : new Date()
+            }
             mode="time"
             is24Hour={true}
             display={Platform.OS === "ios" ? "spinner" : "default"}
