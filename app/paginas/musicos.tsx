@@ -21,7 +21,6 @@ type Musico = {
   foto?: string | ImageSourcePropType; // pode ser string (URL) ou require()
 };
 
-// 👉 garante que tens a imagem aqui
 const defaultFoto = require("../../assets/images/filarmonica1.jpg");
 
 function getImageSource(
@@ -70,9 +69,6 @@ export default function Musicos() {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <TouchableOpacity onPress={() => router.back()}>
-          <Ionicons name="arrow-back" size={24} color="#222" />
-        </TouchableOpacity>
         <Text style={styles.titulo2}>Músicos</Text>
       </View>
 

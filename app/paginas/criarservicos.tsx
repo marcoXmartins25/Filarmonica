@@ -107,7 +107,7 @@ export default function CriarServicos() {
         )}
 
         <TouchableOpacity style={styles.botao} onPress={handleAdicionar}>
-          <Text style={styles.textoBotao}>Adicionar Serviço</Text>
+          <Text style={styles.textoBotao}>Criar Serviço</Text>
         </TouchableOpacity>
       </ScrollView>
     </KeyboardAvoidingView>

@@ -25,7 +25,9 @@ export default function Servicos() {
   const router = useRouter();
   const [servicos, setServicos] = useState<Servico[]>([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [servicoSelecionado, setServicoSelecionado] = useState<Servico | null>(null);
+  const [servicoSelecionado, setServicoSelecionado] = useState<Servico | null>(
+    null
+  );
 
   useFocusEffect(
     React.useCallback(() => {
@@ -50,7 +52,10 @@ export default function Servicos() {
             const novosServicos = [...servicos];
             novosServicos.splice(index, 1);
             setServicos(novosServicos);
-            await AsyncStorage.setItem("servicos", JSON.stringify(novosServicos));
+            await AsyncStorage.setItem(
+              "servicos",
+              JSON.stringify(novosServicos)
+            );
           },
         },
       ]
@@ -82,11 +87,8 @@ export default function Servicos() {
             <Text style={styles.texto}>{item.nome}</Text>
             <View style={styles.infoLinha}>
               <Text style={styles.hora}>{item.hora || ""}</Text>
-              <TouchableOpacity
-                style={styles.botaoEliminar}
-                onPress={() => eliminarServico(index)}
-              >
-                <Ionicons name="trash" size={20} color="white" />
+              <TouchableOpacity onPress={() => eliminarServico(index)}>
+                <Ionicons name="trash" size={24} color="white" />
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
@@ -103,8 +105,13 @@ export default function Servicos() {
         <View style={styles.modalFundo}>
           <View style={styles.modalContainer}>
             <Text style={styles.modalTitulo}>{servicoSelecionado?.nome}</Text>
-            <Text style={styles.modalTexto}>Hora: {servicoSelecionado?.hora}</Text>
-            <Text style={styles.modalTexto}>Descrição: {servicoSelecionado?.descricao || servicoSelecionado?.seviço}</Text>
+            <Text style={styles.modalTexto}>
+              Hora: {servicoSelecionado?.hora}
+            </Text>
+            <Text style={styles.modalTexto}>
+              Descrição:{" "}
+              {servicoSelecionado?.descricao || servicoSelecionado?.seviço}
+            </Text>
 
             <Pressable
               style={styles.botaoFechar}
@@ -160,11 +167,6 @@ const styles = StyleSheet.create({
     color: "#FFD700",
     fontSize: 16,
     fontWeight: "500",
-  },
-  botaoEliminar: {
-    backgroundColor: "#FF4C4C",
-    padding: 6,
-    borderRadius: 8,
   },
   modalFundo: {
     flex: 1,
