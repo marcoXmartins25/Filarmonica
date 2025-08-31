@@ -18,13 +18,13 @@ export default function AdicionarMusico() {
   const [instrumento, setInstrumento] = useState("");
 
   const handleAdicionar = async () => {
-    if (!nome.trim() || !instrumento.trim()) {
+    if (!nome.trim() || !instrumento.trim()) { // Verifica se todos os campos estão preenchidos
       Alert.alert("Preencha todos os campos!");
       return;
     }
 
-    const musicosSalvos = await AsyncStorage.getItem("musicos");
-    const musicos = musicosSalvos ? JSON.parse(musicosSalvos) : [];
+    const musicosSalvos = await AsyncStorage.getItem("musicos"); // Carrega os músicos existentes
+    const musicos = musicosSalvos ? JSON.parse(musicosSalvos) : []; // lista de músicos
 
     // ✅ adiciona id único e foto por defeito
     const novoMusico = {
@@ -34,7 +34,7 @@ export default function AdicionarMusico() {
     };
 
     musicos.push(novoMusico);
-    await AsyncStorage.setItem("musicos", JSON.stringify(musicos));
+    await AsyncStorage.setItem("musicos", JSON.stringify(musicos)); // Atualiza os músicos no armazenamento
 
     Alert.alert(
       "Músico adicionado!",
@@ -47,7 +47,7 @@ export default function AdicionarMusico() {
   };
 
   return (
-    <KeyboardAvoidingView
+    <KeyboardAvoidingView // Componente que ajusta o teclado para não tapar os campos de entrada
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >

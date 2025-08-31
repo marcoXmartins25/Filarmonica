@@ -21,14 +21,14 @@ export default function CriarServicos() {
   const router = useRouter();
 
   const handleAdicionar = async () => {
-    if (!nome.trim() || !descricao.trim() || !hora.trim()) {
+    if (!nome.trim() || !descricao.trim() || !hora.trim()) { // Verifica se todos os campos estão preenchidos
       Alert.alert("Preencha todos os campos!");
       return;
     }
     const servicosSalvos = await AsyncStorage.getItem("servicos");
-    const servicos = servicosSalvos ? JSON.parse(servicosSalvos) : [];
-    servicos.push({ nome, descricao, hora });
-    await AsyncStorage.setItem("servicos", JSON.stringify(servicos));
+    const servicos = servicosSalvos ? JSON.parse(servicosSalvos) : []; // Carrega os serviços existentes
+    servicos.push({ nome, descricao, hora }); // Adiciona o novo serviço à lista
+    await AsyncStorage.setItem("servicos", JSON.stringify(servicos)); // Atualiza os serviços no armazenamento
     Alert.alert(
       "Serviço criado!",
       `Nome: ${nome}\nDescrição: ${descricao}\nHora: ${hora}`
@@ -40,7 +40,7 @@ export default function CriarServicos() {
   };
 
   return (
-    <KeyboardAvoidingView
+    <KeyboardAvoidingView // Componente que ajusta o teclado para não tapar os campos de entrada
       style={{ flex: 1 }}
       behavior={Platform.OS === "ios" ? "padding" : undefined}
     >
@@ -94,7 +94,7 @@ export default function CriarServicos() {
             mode="time"
             is24Hour={true}
             display={Platform.OS === "ios" ? "spinner" : "default"}
-            themeVariant="light" // 👈 força sempre fundo claro no iOS
+            themeVariant="light" // força sempre fundo claro no iOS
             onChange={(_, selectedDate) => {
               setShowPicker(false);
               if (selectedDate) {

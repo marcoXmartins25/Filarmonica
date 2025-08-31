@@ -18,7 +18,6 @@ type Servico = {
   nome?: string;
   hora?: string;
   descricao?: string;
-  seviço?: string;
 };
 
 export default function Servicos() {
@@ -30,7 +29,7 @@ export default function Servicos() {
   );
 
   useFocusEffect(
-    React.useCallback(() => {
+    React.useCallback(() => {  // sempre que voltar na screen da update
       const carregarServicos = async () => {
         const servicosSalvos = await AsyncStorage.getItem("servicos");
         setServicos(servicosSalvos ? JSON.parse(servicosSalvos) : []);
@@ -44,17 +43,16 @@ export default function Servicos() {
       "Eliminar Serviço",
       "Tem a certeza que quer eliminar este serviço?",
       [
-        { text: "Cancelar", style: "cancel" },
+        { text: "Cancelar", style: "cancel" }, //botões de confirmação
         {
           text: "Eliminar",
           style: "destructive",
           onPress: async () => {
-            const novosServicos = [...servicos];
-            novosServicos.splice(index, 1);
+            const novosServicos = servicos.filter((_, i) => i !== index); // Remove o serviço da lista
             setServicos(novosServicos);
             await AsyncStorage.setItem(
               "servicos",
-              JSON.stringify(novosServicos)
+              JSON.stringify(novosServicos) // Atualiza os serviços no armazenamento e guarda
             );
           },
         },
@@ -64,7 +62,7 @@ export default function Servicos() {
 
   const abrirModal = (servico: Servico) => {
     setServicoSelecionado(servico);
-    setModalVisible(true);
+    setModalVisible(true); // Abre o modal com as informações do serviço selecionado
   };
 
   return (
@@ -77,16 +75,16 @@ export default function Servicos() {
       </View>
 
       <FlatList
-        data={servicos}
-        keyExtractor={(_, idx) => idx.toString()}
-        renderItem={({ item, index }) => (
+        data={servicos} // fonte de dados são os serviços
+        keyExtractor={(_, idx) => idx.toString()} // chave única para cada item
+        renderItem={({ item, index }) => ( // renderiza cada item da lista
           <TouchableOpacity
             style={styles.item}
-            onPress={() => abrirModal(item)}
+            onPress={() => abrirModal(item)} // Abre o modal com as informações do serviço selecionado
           >
             <Text style={styles.texto}>{item.nome}</Text>
             <View style={styles.infoLinha}>
-              <Text style={styles.hora}>{item.hora || ""}</Text>
+              <Text style={styles.hora}>{item.hora}</Text>
               <TouchableOpacity onPress={() => eliminarServico(index)}>
                 <Ionicons name="trash" size={24} color="white" />
               </TouchableOpacity>
@@ -109,8 +107,7 @@ export default function Servicos() {
               Hora: {servicoSelecionado?.hora}
             </Text>
             <Text style={styles.modalTexto}>
-              Descrição:{" "}
-              {servicoSelecionado?.descricao || servicoSelecionado?.seviço}
+              Descrição: {servicoSelecionado?.descricao}
             </Text>
 
             <Pressable

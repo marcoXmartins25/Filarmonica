@@ -27,7 +27,7 @@ function getImageSource(
   foto?: string | ImageSourcePropType | null
 ): ImageSourcePropType {
   if (!foto) return defaultFoto; // se for undefined, null ou vazio
-  if (typeof foto === "string") return { uri: foto }; // string (URL)
+  if (typeof foto === "string") return { uri: foto }; // string (URL) mais tarde acrescentar fotografia
   return foto; // se já for require()
 }
 
@@ -36,7 +36,7 @@ export default function Musicos() {
   const [musicos, setMusicos] = useState<Musico[]>([]);
 
   const carregarMusicos = async () => {
-    const musicosSalvos = await AsyncStorage.getItem("musicos");
+    const musicosSalvos = await AsyncStorage.getItem("musicos"); // buscar os músicos no asyncstorage
     setMusicos(musicosSalvos ? JSON.parse(musicosSalvos) : []);
   };
 
@@ -57,9 +57,9 @@ export default function Musicos() {
           text: "Eliminar",
           style: "destructive",
           onPress: async () => {
-            const novos = musicos.filter((m) => m.id !== id);
-            setMusicos(novos);
-            await AsyncStorage.setItem("musicos", JSON.stringify(novos));
+            const novos = musicos.filter((m) => m.id !== id); // Remove o músico da lista
+            setMusicos(novos); // Atualiza o estado local
+            await AsyncStorage.setItem("musicos", JSON.stringify(novos)); // guarda os músicos atualizados
           },
         },
       ]
@@ -73,9 +73,9 @@ export default function Musicos() {
       </View>
 
       <FlatList
-        data={musicos}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
+        data={musicos} // fonte de dados é a lista de músicos
+        keyExtractor={(item) => item.id} // chave única para cada item
+        renderItem={({ item }) => ( // renderiza cada item da lista
           <View style={styles.item}>
             <Image source={getImageSource(item.foto)} style={styles.foto} />
             <View style={{ flex: 1 }}>
